@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-10-13 23:34:31
- * @LastEditTime: 2020-10-13 23:35:43
+ * @LastEditTime: 2020-10-14 08:51:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /canvas-demo-1/index.html
@@ -12,8 +12,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>画板</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    hi
+    <div id="canvas"></div>
+    <script>
+        canvas.onclick = (e) =>{
+            console.log(e)
+            console.log(e.clientX)
+            console.log(e.clientY)
+            
+
+            let div = document.createElement('div')
+            
+            div.style.position='absolute'
+            div.style.left=e.clientX+'px'
+            div.style.top=e.clientY+'px'
+            div.style.width='5px'
+            div.style.height='5px'
+            div.style.marginLeft='-3px'
+            div.style.marginTop='-3px'
+            div.style.borderRadius='50%'
+            div.style.backgroundColor='black'
+            
+            canvas.appendChild(div)
+        }
+    </script>
 </body>
 </html>
