@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-10-13 23:34:31
- * @LastEditTime: 2020-10-14 11:05:11
+ * @LastEditTime: 2020-10-15 14:23:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /canvas-demo-1/index.html
@@ -20,28 +20,70 @@
        let canvas = document.getElementById("canvas")
        canvas.width=document.documentElement.clientWidth;
        canvas.height=document.documentElement.clientHeight;
-        let ctx = canvas.getContext("2d")
-          
+       var isTouchDevice = 'ontouchstart' in document.documentElement
+       let ctx = canvas.getContext("2d")
          let paining=false
+         let last
          ctx.fillStyle="black"
          ctx.strokeStyle="none"
-         canvas.onmousedown=()=>{
+         ctx.lineWidth=8
+         ctx.lineCap="round"
+
+         
+            function drawLine(x1,y1,x2,y2){
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);//起点
+            ctx.lineTo(x2, y2);//终点
+            ctx.stroke();
+            }
+    //    drawLine(0,0,500,500)
+         
+       console.log(isTouchDevice)
+
+       if(isTouchDevice){
+           canvas.ontouchstart=(e) =>{
+            console.log(e)
+            last=[e.touches[0].clientX,e.touches[0].clientY]
+           }
+           canvas.ontouchmove = (e)=>{
+            let x=e.touches[0].clientX
+            let y=e.touches[0].clientY
+           // console.log(x,y)
+            drawLine(last[0],last[1],x,y)
+            last=[e.touches[0].clientX,e.touches[0].clientY]
+        //    ctx.beginPath()
+        //    ctx.arc(x, y, 5, 0, 2 * Math.PI)
+        //    ctx.stroke()
+        //    ctx.fill();
+           }
+       }
+       else{
+        canvas.onmousedown=(e)=>{
             paining=true
+            last=[e.clientX,e.clientY]
          }
         canvas.onmousemove = (e)=>{
-            if(paining === true){  
-           
-           ctx.beginPath()
-           ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
-           ctx.stroke()
-           ctx.fill();
-            }else{
-                console.log("===========")
-            }
+           //这里的上一次就是 down ,获取 down 的位置
+           if(paining === true){  
+            console.log(last)
+            drawLine(last[0],last[1],e.clientX,e.clientY)
+            last=[e.clientX,e.clientY]
+        //    ctx.beginPath()
+        //    ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI)
+        //    ctx.stroke()
+        //    ctx.fill();
+        //     }else{
+        //         console.log("===========")
+        
+     }
         }
          canvas.onmouseup=()=>{
             paining=false
         }
+       }
+
+       
+       
        
     </script>
 </body>
